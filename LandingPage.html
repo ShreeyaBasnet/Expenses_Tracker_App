@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>बchat — Smart Expense Tracker</title>
+
+ 
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="landingPage.css">
+  <script src="script.js"></script>
+</head>
+
+
+<body>
+
+<div class="page active" id="landingPage">
+  <div class="landing">
+
+    <!-- Navbar -->
+    <nav class="nav">
+    <div class="nav-logo">ब<span>chat</span></div>
+
+    <ul class="nav-links">
+      <li><a href="#" onclick="scrollToSection('about')">What is बchat?</a></li>
+      <li><a href="#" onclick="scrollToSection('features')">Features</a></li>
+      <li><a href="#" onclick="scrollToSection('plans')">Plans & Goals</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <!-- ✅ LOGIN -->
+        <button class="btn-ghost" onclick="openLogin()">Login</button>
+
+        <!-- ✅ SIGNUP -->
+        <button class="btn-primary" onclick="openSignup()">Get Started</button>
+        
+    </div>
+  </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-tag"><div class="hero-tag-dot"></div> Smart Finance for Everyone</div>
+          <h1>Take control of your money in a <em>smarter way</em></h1>
+          <p class="hero-sub">Track your expenses, understand your spending habits, and make better financial decisions with ease.</p>
+           <div class="hero-btns">
+            <!-- ✅ SIGNUP -->
+            <button class="btn-hero-primary" onclick="openSignup()">
+              Get Started Free
+            </button>
+
+            <button class="btn-hero-outline" onclick="openSignup()">See Demo</button>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-num">12K+</div>
+              <div class="stat-label">Active users</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">$4.2M</div>
+              <div class="stat-label">Tracked monthly</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-num">4.9★</div>
+              <div class="stat-label">App rating</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card-top">
+            <div class="top-label">Monthly savings</div>
+            <div class="top-val">$1,240</div>
+            <div class="top-badge">↑ 18% this month</div>
+          </div>
+          <div class="hero-card-main">
+            <div class="card-label">Total Balance</div>
+            <div class="card-amount">$8,450.00</div>
+            <div class="card-sub">Updated just now</div>
+            <div class="card-bar-wrap">
+              <div class="card-bar-bg"><div class="card-bar-fill"></div></div>
+              <div class="card-bar-label"><span>Budget used: 68%</span><span>$5,746 / $8,450</span></div>
+            </div>
+            <div class="card-row">
+              <div class="card-mini">
+                <div class="card-mini-label">Income</div>
+                <div class="card-mini-val green">+$3,200</div>
+              </div>
+              <div class="card-mini">
+                <div class="card-mini-label">Expenses</div>
+                <div class="card-mini-val red">−$1,960</div>
+              </div>
+              <div class="card-mini">
+                <div class="card-mini-label">Savings</div>
+                <div class="card-mini-val" style="color:#f4c842;">$1,240</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-card-float">
+            <div class="float-title">Today's spending</div>
+            <div class="float-item">
+              <div class="float-cat"><div class="float-dot" style="background:#2E7D5A;"></div>Food & Dining</div>
+              <div class="float-amt">$28</div>
+            </div>
+            <div class="float-item">
+              <div class="float-cat"><div class="float-dot" style="background:#1B2E4B;"></div>Transport</div>
+              <div class="float-amt">$14</div>
+            </div>
+            <div class="float-item">
+              <div class="float-cat"><div class="float-dot" style="background:#E63946;"></div>Shopping</div>
+              <div class="float-amt">$67</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- Features -->
+    <section id="features">
+      <div class="section-tag">Why बchat</div>
+      <div class="section-title">Everything you need to manage money</div>
+      <div class="section-sub">Built for individuals who want clarity, not complexity — your finances, simplified.</div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Real-time tracking</div>
+          <div class="feature-text">See every transaction as it happens. Stay updated on your spending without manual entry.</div>
+        </div>
+        <div class="feature-card highlight">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-title">Smart budget goals</div>
+          <div class="feature-text">Set savings goals and get intelligent nudges when you're approaching limits. Stay on track effortlessly.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <div class="feature-title">Visual insights</div>
+          <div class="feature-text">Beautiful charts and breakdowns show exactly where your money goes, week by week.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <div class="feature-title">Smart alerts</div>
+          <div class="feature-text">Get notified before you overspend. Customizable alerts for every budget category.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-title">Bank-level security</div>
+          <div class="feature-text">Your financial data is encrypted end-to-end. We never sell or share your information.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <div class="feature-title">Works everywhere</div>
+          <div class="feature-text">Available on web, iOS, and Android. Sync seamlessly across all your devices.</div>
+        </div>
+      </div>
+    </section>
+     
+  <section id="about" >
+    <div class="section-tag">What is बchat</div>
+
+    
+    <div class="section-sub">
+        <div class="section-title">
+      Everything you need to manage money
+    </div>
+
+        <p>
+    बchat is a smart and user-friendly expense tracking system designed to help individuals take full control of their finances. 
+    It allows users to record daily expenses, categorize spending, and monitor their financial activities in a simple and structured way.
+  </p>
+
+  <p>
+    With features like receipt scanning, automated insights, and visual reports, बchat reduces manual effort and provides a clear understanding of spending patterns. 
+    This helps users make better financial decisions and stay within their budget.
+  </p>
+
+  <p>
+    Whether you're a student or a working professional, बchat supports you in building better financial habits and achieving your savings goals effectively.
+  </p>
+  </section>
+
+    <!-- CTA --><!-- PLANS -->
+    <section id="plans" class="cta-section">
+      <div class="cta-inner">
+        <h2>Start tracking smarter today</h2>
+        <p>Join thousands of users who've taken back control of their finances. Free forever for personal use.</p>
+        <div class="cta-btns">
+          <button class="btn-hero-primary" onclick="openSignup()">Create Free Account</button>
+          <button class="btn-hero-outline" onclick="openSignup()">Learn More</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-logo">ब<span>chat</span></div>
+      <div>© 2025 बchat. All rights reserved.</div>
+      <div>Privacy · Terms · Support</div>
+    </footer>
+  </div>
+</div>
+</body>
+</html>
