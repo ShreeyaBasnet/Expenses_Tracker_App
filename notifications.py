@@ -8,46 +8,41 @@ Handles 3 notification rules:
   Rule 3 — Anomaly Detection        (AI/stats: std deviation spike detection)
 
 Called by: app.py via run_notifications()
-
-To switch from CSV to SQL: edit load_data() and load_balance() only.
-Everything else stays the same.
 """
 
+import os
 import pandas as pd
 import numpy as np
 from datetime import timedelta
+from sqlalchemy import create_engine
+
+
+# =============================================================
+# DATABASE CONNECTION
+# =============================================================
+
+def get_engine():
+    db_url = os.environ.get("DATABASE_URL")
+    return create_engine(db_url)
 
 
 # =============================================================
 # DATA LOADING
 # =============================================================
 
-def load_data():
-    """
-    Load expense transactions from CSV.
-
-    --- TO SWITCH TO SQL LATER ---
-    import mysql.connector
-    conn = mysql.connector.connect(
-        host='localhost', user='root',
-        password='your_password', database='expense_tracker'
-    )
-    df = pd.read_sql("SELECT date, category, amount FROM expenses", conn)
-    conn.close()
-    return df
-    """
-    df = pd.read_csv('expenses.csv')
+def load_data(user_id):
+    """Load expense transactions from Railway for a specific user."""
+    engine = get_engine()
+    query = "SELECT date, category, amount FROM expenses WHERE user_id = %(user_id)s"
+    df = pd.read_sql(query, engine, params={"user_id": user_id})
     df['date'] = pd.to_datetime(df['date'])
     return df
 
 
-def load_balance():
+def load_balance(user_id):
     """
     Load user's wallet balance.
-
-    --- TO SWITCH TO SQL LATER ---
-    cursor.execute("SELECT balance FROM wallet WHERE user_id = 1")
-    return float(cursor.fetchone()[0])
+    TODO: Update query when backend confirms table/column name.
     """
     return 1000.00
 
@@ -65,14 +60,10 @@ def get_this_week(df):
 
 # =============================================================
 # RULE 1 — BUDGET THRESHOLD ALERT
-# Triggers when total spending this month >= 80% of balance
 # =============================================================
 
 def check_budget_threshold(df, balance):
-    """
-    Compares total spending this month against wallet balance.
-    Triggers at 80% usage.
-    """
+    """Triggers when total spending this month >= 80% of balance."""
     today = df['date'].max()
     this_month = df[
         (df['date'].dt.month == today.month) &
@@ -92,13 +83,10 @@ def check_budget_threshold(df, balance):
 
 # =============================================================
 # RULE 2 — TOP SPENDING CATEGORY THIS WEEK
-# Always returns — informational insight
 # =============================================================
 
 def check_top_category(df):
-    """
-    Finds the category with the highest total spending this week.
-    """
+    """Finds the category with the highest total spending this week."""
     this_week = get_this_week(df)
 
     if this_week.empty:
@@ -117,16 +105,12 @@ def check_top_category(df):
 
 # =============================================================
 # RULE 3 — ANOMALY DETECTION
-# Triggers when this week's category spending exceeds
-# mean + 2 standard deviations of historical weekly spending
 # =============================================================
 
 def check_spending_anomaly(df):
     """
-    Uses standard deviation based anomaly detection.
-    Compares this week's spending per category against
-    historical weekly mean and std deviation.
-    Triggers when current week > mean + (2 x std).
+    Std deviation based anomaly detection.
+    Triggers when this week > mean + (2 x std) for any category.
     """
     alerts = []
     this_week = get_this_week(df)
@@ -134,7 +118,7 @@ def check_spending_anomaly(df):
     if this_week.empty:
         return alerts
 
-    # Build historical weekly totals per category
+    df = df.copy()
     df['week_index'] = (
         (df['date'].dt.year - df['date'].dt.year.min()) * 52 +
         df['date'].dt.isocalendar().week.astype(int)
@@ -146,10 +130,7 @@ def check_spending_anomaly(df):
         .reset_index()
     )
 
-    # Calculate mean and std per category
     historical_stats = weekly_totals.groupby('category')['amount'].agg(['mean', 'std'])
-
-    # This week's totals per category
     this_week_totals = this_week.groupby('category')['amount'].sum()
 
     for category, this_week_amount in this_week_totals.items():
@@ -159,7 +140,6 @@ def check_spending_anomaly(df):
         mean = historical_stats.loc[category, 'mean']
         std = historical_stats.loc[category, 'std']
 
-        # Handle case where std is NaN (only 1 week of data)
         if pd.isna(std) or std == 0:
             continue
 
@@ -179,25 +159,25 @@ def check_spending_anomaly(df):
 # MAIN NOTIFICATION RUNNER
 # =============================================================
 
-def run_notifications():
+def run_notifications(user_id):
     """Runs all 3 rules and returns list of triggered alerts."""
-    df = load_data()
-    balance = load_balance()
+    df = load_data(user_id)
 
+    if df.empty:
+        return []
+
+    balance = load_balance(user_id)
     notifications = []
 
-    # Rule 1 — Budget threshold
     budget_alert = check_budget_threshold(df, balance)
     if budget_alert:
         notifications.append(budget_alert)
 
-    # Rule 2 — Top category (always runs)
     top_category = check_top_category(df)
     if top_category:
         notifications.append(top_category)
 
-    # Rule 3 — Anomaly detection (can return multiple)
     anomaly_alerts = check_spending_anomaly(df)
     notifications.extend(anomaly_alerts)
 
-    return notifications# Notification rules
+    return notifications

@@ -6,35 +6,33 @@ Handles: data loading, preprocessing, weekly aggregation,
          outlier capping, model selection, and predictions.
 
 Called by: app.py via run_forecast()
-
-To switch from CSV to SQL: edit load_data() only.
-Everything else stays the same.
 """
 
+import os
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
+from sqlalchemy import create_engine
+
+
+# =============================================================
+# DATABASE CONNECTION
+# =============================================================
+
+def get_engine():
+    db_url = os.environ.get("DATABASE_URL")
+    return create_engine(db_url)
 
 
 # =============================================================
 # DATA LOADING
 # =============================================================
 
-def load_data():
-    """
-    Load expense transactions from CSV.
-
-    --- TO SWITCH TO SQL LATER ---
-    import mysql.connector
-    conn = mysql.connector.connect(
-        host='localhost', user='root',
-        password='your_password', database='expense_tracker'
-    )
-    df = pd.read_sql("SELECT date, category, amount FROM expenses", conn)
-    conn.close()
-    return df
-    """
-    df = pd.read_csv('expenses.csv')
+def load_data(user_id):
+    """Load expense transactions from Railway MySQL for a specific user."""
+    engine = get_engine()
+    query = "SELECT date, category, amount FROM expenses WHERE user_id = %(user_id)s"
+    df = pd.read_sql(query, engine, params={"user_id": user_id})
     return df
 
 
@@ -141,9 +139,13 @@ def predict_wma(category_data):
 # MAIN FORECAST RUNNER
 # =============================================================
 
-def run_forecast():
+def run_forecast(user_id):
     """Full pipeline: load → preprocess → aggregate → cap → predict."""
-    df = load_data()
+    df = load_data(user_id)
+
+    if df.empty:
+        return {}
+
     df = preprocess(df)
     weekly = aggregate_weekly(df)
     weekly = cap_outliers(weekly, 'category', 'weekly_total')
@@ -173,4 +175,43 @@ def run_forecast():
                 'message': 'Prediction based on your spending trend.'
             }
 
-    return results# Forecasting pipeline
+    # Summary statistics
+    total = round(sum(
+        v['predicted_amount'] for v in results.values()
+        if v['predicted_amount'] is not None
+    ), 2)
+
+    valid = {k: v['predicted_amount'] for k, v in results.items() if v['predicted_amount'] is not None}
+
+    highest_cat = max(valid, key=valid.get) if valid else None
+    highest_amt = round(valid[highest_cat], 2) if highest_cat else None
+
+    lowest_cat = min(valid, key=valid.get) if valid else None
+    lowest_amt = round(valid[lowest_cat], 2) if lowest_cat else None
+
+    avg_per_cat = round(total / len(valid), 2) if valid else 0
+    categories_tracked = len(results)
+
+    model_summary = {'linear_regression': 0, 'weighted_moving_average': 0, 'insufficient_data': 0}
+    for v in results.values():
+        m = v['model_used']
+        if m in model_summary:
+            model_summary[m] += 1
+
+    # Add percentage share to each prediction
+    for cat, v in results.items():
+        amt = v['predicted_amount']
+        if amt is not None and total > 0:
+            v['percentage_of_total'] = round((amt / total) * 100, 1)
+        else:
+            v['percentage_of_total'] = 0
+
+    return {
+        'total_predicted': total,
+        'highest_category': {'name': highest_cat, 'amount': highest_amt},
+        'lowest_category': {'name': lowest_cat, 'amount': lowest_amt},
+        'average_per_category': avg_per_cat,
+        'categories_tracked': categories_tracked,
+        'model_summary': model_summary,
+        'predictions': results
+    }
