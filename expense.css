@@ -1,0 +1,68 @@
+/* Same base as deposit but red-themed button */
+
+.form-container {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-container label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-600);
+}
+
+.form-container input,
+.form-container select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-300);
+  font-size: 14px;
+  font-family: var(--font);
+  background: #fafafa;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.form-container input:focus,
+.form-container select:focus {
+  border-color: var(--danger);
+  background: var(--white);
+  box-shadow: 0 0 0 2px rgba(255,0,0,0.05);
+}
+
+.form-container button {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: var(--danger);
+  color: var(--white);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.form-container button:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+.form-error {
+  background: #fdeaea;
+  color: var(--danger);
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  border: 1px solid #f5c2c2;
+}

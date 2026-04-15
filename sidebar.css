@@ -1,0 +1,104 @@
+/* =========================
+   SIDEBAR CONTAINER
+========================= */
+.sidebar {
+  background: var(--navy);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 240px;
+  position: sticky;
+  top: 0;
+  padding-top: 20px;
+}
+
+/* =========================
+   LOGO
+========================= */
+.sidebar-logo {
+  font-family: var(--font);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--white);
+  padding: 0 24px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-logo span {
+  color: var(--emerald);
+}
+
+/* =========================
+   SECTION
+========================= */
+.sidebar-section {
+  padding: 20px 0 10px;
+}
+
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  padding: 0 24px;
+  margin-bottom: 8px;
+}
+
+/* =========================
+   NAV ITEMS
+========================= */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+/* ICON */
+.sidebar-item .icon {
+  width: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+/* TEXT */
+.sidebar-item .text {
+  flex: 1;
+}
+
+/* HOVER */
+.sidebar-item:hover {
+  background: rgba(255,255,255,0.08);
+  color: var(--white);
+}
+
+/* ACTIVE */
+.sidebar-item.active {
+  background: rgba(255,255,255,0.12);
+  color: var(--white);
+  border-left: 3px solid var(--emerald);
+}
+
+/* =========================
+   FOOTER (LOGOUT)
+========================= */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+}

@@ -1,0 +1,158 @@
+/* =========================
+   PAGE TITLE
+========================= */
+.dash-main h2 {
+  font-family: var(--font);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 20px;
+}
+
+/* =========================
+   TABLE CONTAINER
+========================= */
+.txn-container {
+  background: var(--white);
+  border-radius: 16px;
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+
+/* =========================
+   TABLE
+========================= */
+.txn-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* HEADER */
+.txn-table th {
+  text-align: left;
+  padding: 14px 20px;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  background: var(--gray-100);
+  letter-spacing: 0.05em;
+}
+
+/* ROWS */
+.txn-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 14px;
+}
+
+/* HOVER */
+.txn-table tr:hover {
+  background: var(--gray-100);
+}
+
+/* REMOVE LAST BORDER */
+.txn-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* =========================
+   ALIGNMENT FIX
+========================= */
+/* Amount column */
+.txn-table td:nth-child(4),
+.txn-table th:nth-child(4) {
+  text-align: right;
+}
+
+/* Actions column */
+.txn-table td:nth-child(5),
+.txn-table th:nth-child(5) {
+  text-align: right;
+}
+
+/* =========================
+   AMOUNT COLORS
+========================= */
+.amount-income {
+  color: var(--emerald);
+  font-weight: 600;
+}
+
+.amount-expense {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* =========================
+   TYPE BADGE
+========================= */
+.type-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.type-income {
+  background: var(--emerald-pale);
+  color: var(--emerald);
+}
+
+.type-expense {
+  background: #fdeaea;
+  color: var(--danger);
+}
+
+/* =========================
+   ACTION COLUMN
+========================= */
+.txn-actions {
+  display: flex;
+  justify-content: flex-end; /* 🔥 key fix */
+  gap: 8px;
+}
+
+/* EDIT BUTTON */
+.btn-edit {
+  padding: 6px 10px;
+  background: var(--navy);
+  color: white;
+  border-radius: 6px;
+  font-size: 12px;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+/* DELETE BUTTON */
+.btn-delete {
+  padding: 6px 10px;
+  background: var(--danger);
+  color: white;
+  border-radius: 6px;
+  font-size: 12px;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+/* HOVER EFFECT */
+.btn-edit:hover,
+.btn-delete:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* OPTIONAL: tighter right edge */
+.txn-table td:last-child {
+  padding-right: 12px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+  .txn-table th,
+  .txn-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+}

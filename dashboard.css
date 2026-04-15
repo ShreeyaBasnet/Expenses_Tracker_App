@@ -1,0 +1,195 @@
+/* =========================
+   DASHBOARD LAYOUT
+========================= */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* =========================
+   MAIN AREA
+========================= */
+.dash-main {
+  padding: 30px;
+}
+
+/* =========================
+   HEADER
+========================= */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.dash-greeting {
+  font-size: 24px;
+  font-weight: 800;
+  font-family: var(--font);
+  color: var(--navy);
+}
+
+.dash-date {
+  font-size: 13px;
+  color: var(--gray-500);
+}
+
+/* HEADER BUTTONS */
+.dash-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.kpi-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid var(--gray-200);
+  transition: 0.2s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.kpi-card.navy {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--gray-500);
+}
+
+.kpi-card.navy .kpi-label {
+  color: rgba(255,255,255,0.6);
+}
+
+.kpi-value {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+/* =========================
+   TRANSACTIONS SECTION
+========================= */
+.txn-section {
+  background: var(--white);
+  border-radius: 14px;
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+
+.txn-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.txn-title {
+  font-weight: 700;
+  font-family: var(--font);
+  color: var(--navy);
+}
+
+/* =========================
+   TABLE
+========================= */
+.txn-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.txn-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  padding: 12px 20px;
+  background: var(--gray-100);
+}
+
+.txn-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 14px;
+}
+
+.txn-table tr:hover {
+  background: var(--gray-100);
+}
+
+/* =========================
+   FORM (DEPOSIT / EXPENSE)
+========================= */
+form {
+  max-width: 420px;
+  margin-top: 20px;
+  background: var(--white);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--gray-200);
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-300);
+  font-size: 14px;
+  font-family: var(--font-body);
+}
+
+form input:focus,
+form select:focus {
+  outline: none;
+  border-color: var(--emerald);
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--emerald);
+  color: var(--white);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+form button:hover {
+  background: var(--emerald-light);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dash-main {
+    padding: 20px;
+  }
+}
