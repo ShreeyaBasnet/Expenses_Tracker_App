@@ -2,40 +2,9 @@
 session_start();
 include "../Includes/db.php";
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../Config/login.php");
-    exit();
-}
-
-$user_id = $_SESSION['user_id'];
-$error = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $amount = isset($_POST['amount']) ? floatval($_POST['amount']) : 0;
-    $date = $_POST['date'] ?? "";
-    $note = isset($_POST['note']) ? htmlspecialchars($_POST['note']) : "";
-
-    // ✅ VALIDATION
-    if ($amount <= 0) {
-        $error = "Amount must be greater than 0";
-    } elseif (empty($date)) {
-        $error = "Date is required";
-    } else {
-
-        // INSERT INTO deposits
-        $stmt = $conn->prepare("INSERT INTO deposits (user_id, amount, date, note) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("idss", $user_id, $amount, $date, $note);
-        $stmt->execute();
-
-        // INSERT INTO transactions
-        $stmt2 = $conn->prepare("INSERT INTO transactions (user_id, type, amount, description) VALUES (?, 'deposit', ?, ?)");
-        $stmt2->bind_param("ids", $user_id, $amount, $note);
-        $stmt2->execute();
-
-        header("Location: deposit.php");
-        exit();
-    }
+if(!isset($_SESSION['user_id'])){
+header("Location: ../Config/login.php");
+exit();
 }
 ?>
 
@@ -51,8 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <link rel="stylesheet" href="../Assets/balance.css">
 <link rel="stylesheet" href="../Assets/deposit.css">
 
-</head>
+<script src="https://js.stripe.com/v3/"></script>
 
+</head>
 <body>
 
 <div class="dashboard-layout">
@@ -63,44 +33,162 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <h2>Add Deposit</h2>
 
-<!-- BALANCE -->
 <?php include "../Includes/balance.php"; ?>
 
-<!-- ERROR -->
-<?php if (!empty($error)): ?>
-  <div class="form-error"><?= $error ?></div>
-<?php endif; ?>
-
-<!-- FORM -->
 <div class="form-container">
-<form method="POST">
 
-  <label>Amount</label>
-  <input type="number" name="amount" min="1" step="0.01" required
-  value="<?= isset($_POST['amount']) ? $_POST['amount'] : '' ?>">
+<form id="depositForm">
 
-  <label>Date</label>
-  <input type="date" name="date" id="date" required
-  value="<?= isset($_POST['date']) ? $_POST['date'] : '' ?>">
+<label>Amount</label>
 
-  <label>Note</label>
-  <input type="text" name="note" placeholder="Optional"
-  value="<?= isset($_POST['note']) ? $_POST['note'] : '' ?>">
+<input
+type="number"
+id="amount"
+min="1"
+step="0.01"
+required
+>
 
-  <button type="submit">+ Add Deposit</button>
+
+<label>Date</label>
+
+<input
+type="date"
+id="date"
+required
+>
+
+
+<label>Note</label>
+
+<input
+type="text"
+id="note"
+placeholder="Optional"
+>
+
+
+<button
+type="submit"
+id="depositBtn"
+>
++ Add Deposit
+</button>
 
 </form>
+
 </div>
 
 </main>
 </div>
 
+
 <script>
-// Auto-fill today's date ONLY if empty
-const dateInput = document.getElementById("date");
-if (!dateInput.value) {
-  dateInput.value = new Date().toISOString().split("T")[0];
+
+/* autofill date */
+
+document.getElementById(
+"date"
+).value=
+new Date()
+.toISOString()
+.split("T")[0];
+
+
+
+const stripe=Stripe(
+"pk_test_51TPcD92MAbMjSPP9kAcoA5qXY28e5BZMpKnzHqwrtxV60bmwwNkdagvvJwRWNJNeIQAFvsPLdGyAOoMG6ZLAm0VT00H3rqK6wk"
+);
+
+
+
+document
+.getElementById(
+"depositForm"
+)
+.addEventListener(
+"submit",
+async function(e){
+
+e.preventDefault();
+
+try{
+
+document
+.getElementById(
+"depositBtn"
+).disabled=true;
+
+
+
+let amount=
+document.getElementById(
+"amount"
+).value;
+
+let date=
+document.getElementById(
+"date"
+).value;
+
+let note=
+document.getElementById(
+"note"
+).value;
+
+
+
+let response=
+await fetch(
+"../Config/create-checkout-session.php",
+{
+method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
+
+body:JSON.stringify({
+amount:amount,
+date:date,
+note:note
+})
+
 }
+);
+
+
+let session=
+await response.json();
+
+console.log(session);
+
+
+
+await stripe.redirectToCheckout({
+sessionId:session.id
+});
+
+}
+catch(err){
+
+console.log(err);
+
+alert(
+"Stripe checkout failed"
+);
+
+document
+.getElementById(
+"depositBtn"
+).disabled=false;
+
+}
+
+}
+);
+
 </script>
 
 </body>
