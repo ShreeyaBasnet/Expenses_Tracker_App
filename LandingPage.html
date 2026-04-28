@@ -8,8 +8,8 @@
  
 
   <!-- CSS -->
-  <link rel="stylesheet" href="landingPage.css">
-  <script src="script.js"></script>
+  <link rel="stylesheet" href="../Assets/landingPage.css">
+  
 </head>
 
 
@@ -23,9 +23,9 @@
     <div class="nav-logo">ब<span>chat</span></div>
 
     <ul class="nav-links">
-      <li><a href="#" onclick="scrollToSection('about')">What is बchat?</a></li>
-      <li><a href="#" onclick="scrollToSection('features')">Features</a></li>
-      <li><a href="#" onclick="scrollToSection('plans')">Plans & Goals</a></li>
+      <li><a href="#about" onclick="scrollToSection('about')">What is बchat?</a></li>
+      <li><a href="#features" onclick="scrollToSection('features')">Features</a></li>
+      <li><a href="#plans" onclick="scrollToSection('plans')">Plans & Goals</a></li>
     </ul>
 
     <div class="nav-actions">
@@ -179,9 +179,88 @@
     Whether you're a student or a working professional, बchat supports you in building better financial habits and achieving your savings goals effectively.
   </p>
   </section>
+  <section id="plans" class="plans-section">
+
+  <div class="section-tag">Plans & Goals</div>
+  <div class="section-title">Choose your plan & track your goals</div>
+  <div class="section-sub">
+    Flexible plans and smart goal tracking to help you stay financially strong.
+  </div>
+
+  <!-- 🔷 PLANS -->
+  <div class="plans-grid">
+
+    <!-- FREE PLAN -->
+    <div class="plan-card">
+      <h3>Free</h3>
+      <div class="plan-price">$0<span>/month</span></div>
+
+      <ul>
+        <li>✔ Basic expense tracking</li>
+        <li>✔ Monthly reports</li>
+        <li>✔ Simple budget goals</li>
+      </ul>
+
+      <button onclick="openSignup()">Get Started</button>
+    </div>
+
+    <!-- PRO PLAN -->
+    <div class="plan-card highlight">
+      <h3>Pro</h3>
+      <div class="plan-price">$5<span>/month</span></div>
+
+      <ul>
+        <li>✔ Advanced analytics</li>
+        <li>✔ Smart AI insights</li>
+        <li>✔ Unlimited goals</li>
+        <li>✔ Priority support</li>
+      </ul>
+
+      <button onclick="openSignup()">Upgrade</button>
+    </div>
+
+    <!-- PREMIUM PLAN -->
+    <div class="plan-card">
+      <h3>Premium</h3>
+      <div class="plan-price">$10<span>/month</span></div>
+
+      <ul>
+        <li>✔ Everything in Pro</li>
+        <li>✔ Investment tracking</li>
+        <li>✔ Family accounts</li>
+        <li>✔ Custom reports</li>
+      </ul>
+
+      <button onclick="openSignup()">Go Premium</button>
+    </div>
+
+  </div>
+
+  <!-- 🔷 GOALS -->
+  <div class="goals-preview">
+
+    <div class="goal-box">
+      <h4>🏠 Emergency Fund</h4>
+      <p>$3,600 / $5,000</p>
+      <div class="goal-bar">
+        <div class="goal-fill" style="width:72%;"></div>
+      </div>
+    </div>
+
+    <div class="goal-box">
+      <h4>✈️ Vacation</h4>
+      <p>$900 / $2,000</p>
+      <div class="goal-bar">
+        <div class="goal-fill" style="width:45%; background:#f59e0b;"></div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
 
     <!-- CTA --><!-- PLANS -->
-    <section id="plans" class="cta-section">
+    <section id="CTA" class="cta-section">
       <div class="cta-inner">
         <h2>Start tracking smarter today</h2>
         <p>Join thousands of users who've taken back control of their finances. Free forever for personal use.</p>
@@ -199,5 +278,6 @@
     </footer>
   </div>
 </div>
+<script src="../Assets/script.js"></script>
 </body>
 </html>

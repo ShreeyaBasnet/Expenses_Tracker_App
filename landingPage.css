@@ -1,4 +1,91 @@
- :root {
+/* ================= PLANS ================= */
+.plans-section {
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.plans-grid {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.plan-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 260px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+}
+
+.plan-card.highlight {
+  border: 2px solid #2E7D5A;
+}
+
+.plan-price {
+  font-size: 28px;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.plan-card li {
+  margin-bottom: 8px;
+}
+
+.plan-card button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: #2E7D5A;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ================= GOALS ================= */
+.goals-preview {
+  margin-top: 60px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.goal-box {
+  background: #f5f7fa;
+  padding: 20px;
+  border-radius: 12px;
+  width: 250px;
+}
+
+.goal-bar {
+  height: 8px;
+  background: #ddd;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.goal-fill {
+  height: 100%;
+  background: #2E7D5A;
+  border-radius: 10px;
+} :root {
     --navy: #1B2E4B;
     --navy-light: #243d63;
     --navy-dark: #121f34;
@@ -244,3 +331,223 @@
   }
   .footer-logo { font-family: var(--font); font-weight: 800; color: white; font-size: 18px; }
   .footer-logo span { color: var(--emerald); }
+  /* ================= PLANS ================= */
+.plans-section {
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.plans-grid {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.plan-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 260px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+}
+
+.plan-card.highlight {
+  border: 2px solid #2E7D5A;
+}
+
+.plan-price {
+  font-size: 28px;
+  margin: 15px 0;
+  font-weight: bold;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.plan-card li {
+  margin-bottom: 8px;
+}
+
+.plan-card button {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: #2E7D5A;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ================= GOALS ================= */
+.goals-preview {
+  margin-top: 60px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.goal-box {
+  background: #f5f7fa;
+  padding: 20px;
+  border-radius: 12px;
+  width: 250px;
+}
+
+.goal-bar {
+  height: 8px;
+  background: #ddd;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.goal-fill {
+  height: 100%;
+  background: #2E7D5A;
+  border-radius: 10px;
+}
+/* ================= ABOUT SECTION FIX ================= */
+#about {
+  padding: 100px 5%;
+  background: var(--white);
+}
+
+#about .section-title {
+  margin-bottom: 20px;
+}
+
+#about .section-sub {
+  max-width: 800px;     /* wider text */
+  margin: 0 auto;       /* center block */
+  text-align: left;     /* ❗ important fix */
+  line-height: 1.9;     /* more readable */
+  font-size: 16px;
+  color: var(--gray-700);
+}
+
+/* spacing between paragraphs */
+#about .section-sub p {
+  margin-bottom: 20px;
+}
+
+/* better readability */
+#about .section-sub p:last-child {
+  margin-bottom: 0;
+}
+/* ================= ABOUT SECTION FIX ================= */
+#about {
+  padding: 100px 5%;
+  background: var(--white);
+}
+
+#about .section-title {
+  margin-bottom: 20px;
+}
+
+#about .section-sub {
+  max-width: 850px;
+  margin: 0 auto;
+  text-align: left;
+  line-height: 1.9;
+  font-size: 16px;
+  color: var(--gray-700);
+}
+
+#about .section-sub p {
+  margin-bottom: 20px;
+}
+
+#about .section-sub p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ================= FEATURE CARD COLORS ================= */
+
+/* Make 2nd, 4th, 6th cards blue */
+.features-grid .feature-card:nth-child(2),
+.features-grid .feature-card:nth-child(4),
+.features-grid .feature-card:nth-child(6) {
+  background: var(--navy);
+  border-color: var(--navy);
+}
+
+.features-grid .feature-card:nth-child(2) .feature-title,
+.features-grid .feature-card:nth-child(4) .feature-title,
+.features-grid .feature-card:nth-child(6) .feature-title {
+  color: white;
+}
+
+.features-grid .feature-card:nth-child(2) .feature-text,
+.features-grid .feature-card:nth-child(4) .feature-text,
+.features-grid .feature-card:nth-child(6) .feature-text {
+  color: rgba(255,255,255,0.6);
+}
+
+.features-grid .feature-card:nth-child(2) .feature-icon,
+.features-grid .feature-card:nth-child(4) .feature-icon,
+.features-grid .feature-card:nth-child(6) .feature-icon {
+  background: rgba(255,255,255,0.12);
+}
+
+
+/* ================= HOVER EFFECT ================= */
+
+/* WHITE → BLUE */
+.feature-card:hover {
+  background: var(--navy);
+  border-color: var(--navy);
+  transform: translateY(-5px);
+}
+
+.feature-card:hover .feature-title {
+  color: white;
+}
+
+.feature-card:hover .feature-text {
+  color: rgba(255,255,255,0.6);
+}
+
+.feature-card:hover .feature-icon {
+  background: rgba(255,255,255,0.12);
+}
+
+
+/* BLUE → WHITE (override for 2,4,6) */
+.features-grid .feature-card:nth-child(2):hover,
+.features-grid .feature-card:nth-child(4):hover,
+.features-grid .feature-card:nth-child(6):hover {
+  background: var(--white);
+  border-color: var(--gray-300);
+}
+
+.features-grid .feature-card:nth-child(2):hover .feature-title,
+.features-grid .feature-card:nth-child(4):hover .feature-title,
+.features-grid .feature-card:nth-child(6):hover .feature-title {
+  color: var(--navy);
+}
+
+.features-grid .feature-card:nth-child(2):hover .feature-text,
+.features-grid .feature-card:nth-child(4):hover .feature-text,
+.features-grid .feature-card:nth-child(6):hover .feature-text {
+  color: var(--gray-500);
+}
+
+.features-grid .feature-card:nth-child(2):hover .feature-icon,
+.features-grid .feature-card:nth-child(4):hover .feature-icon,
+.features-grid .feature-card:nth-child(6):hover .feature-icon {
+  background: var(--emerald-pale);
+}
