@@ -11,8 +11,9 @@ exit();
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
-<title>Deposit</title>
+<title>Wallet Top-Up</title>
 
 <link rel="stylesheet" href="../Assets/global.css">
 <link rel="stylesheet" href="../Assets/sidebar.css">
@@ -23,6 +24,7 @@ exit();
 <script src="https://js.stripe.com/v3/"></script>
 
 </head>
+
 <body>
 
 <div class="dashboard-layout">
@@ -31,52 +33,45 @@ exit();
 
 <main class="dash-main">
 
-<h2>Add Deposit</h2>
+<h2 class="page-title">Top Up Wallet</h2>
 
 <?php include "../Includes/balance.php"; ?>
 
-<div class="form-container">
+<!-- CENTER WRAPPER -->
+<div class="deposit-layout">
+
+<div class="deposit-card">
+
+<h3 class="form-title">Add Funds</h3>
 
 <form id="depositForm">
 
+<!-- QUICK AMOUNTS -->
+<div class="quick-amounts">
+<button type="button" onclick="setAmount(100)">+100</button>
+<button type="button" onclick="setAmount(500)">+500</button>
+<button type="button" onclick="setAmount(1000)">+1000</button>
+</div>
+
 <label>Amount</label>
-
-<input
-type="number"
-id="amount"
-min="1"
-step="0.01"
-required
->
-
+<div class="input-group">
+<span>$</span>
+<input type="number" id="amount" min="1" step="0.01" required>
+</div>
 
 <label>Date</label>
-
-<input
-type="date"
-id="date"
-required
->
-
+<input type="date" id="date" required>
 
 <label>Note</label>
+<input type="text" id="note" placeholder="Optional">
 
-<input
-type="text"
-id="note"
-placeholder="Optional"
->
-
-
-<button
-type="submit"
-id="depositBtn"
->
-+ Add Deposit
+<button type="submit" id="depositBtn">
+💳 Add Money via Stripe
 </button>
 
 </form>
 
+</div>
 </div>
 
 </main>
@@ -85,109 +80,57 @@ id="depositBtn"
 
 <script>
 
-/* autofill date */
+/* AUTO DATE */
+document.getElementById("date").value =
+new Date().toISOString().split("T")[0];
 
-document.getElementById(
-"date"
-).value=
-new Date()
-.toISOString()
-.split("T")[0];
+/* QUICK AMOUNT */
+function setAmount(val){
+document.getElementById("amount").value = val;
+}
 
+/* STRIPE */
+const stripe = Stripe("pk_test_51TPcD92MAbMjSPP9kAcoA5qXY28e5BZMpKnzHqwrtxV60bmwwNkdagvvJwRWNJNeIQAFvsPLdGyAOoMG6ZLAm0VT00H3rqK6wk");
 
-
-const stripe=Stripe(
-"pk_test_51TPcD92MAbMjSPP9kAcoA5qXY28e5BZMpKnzHqwrtxV60bmwwNkdagvvJwRWNJNeIQAFvsPLdGyAOoMG6ZLAm0VT00H3rqK6wk"
-);
-
-
-
-document
-.getElementById(
-"depositForm"
-)
-.addEventListener(
-"submit",
-async function(e){
+document.getElementById("depositForm").addEventListener("submit", async function(e){
 
 e.preventDefault();
 
+let amount = document.getElementById("amount").value;
+let date = document.getElementById("date").value;
+let note = document.getElementById("note").value;
+
+if(amount<=0){
+alert("Enter valid amount");
+return;
+}
+
+document.getElementById("depositBtn").disabled = true;
+
 try{
 
-document
-.getElementById(
-"depositBtn"
-).disabled=true;
-
-
-
-let amount=
-document.getElementById(
-"amount"
-).value;
-
-let date=
-document.getElementById(
-"date"
-).value;
-
-let note=
-document.getElementById(
-"note"
-).value;
-
-
-
-let response=
-await fetch(
-"../Config/create-checkout-session.php",
-{
+let response = await fetch("../Config/create-checkout-session.php",{
 method:"POST",
-
-headers:{
-"Content-Type":
-"application/json"
-},
-
-body:JSON.stringify({
-amount:amount,
-date:date,
-note:note
-})
-
-}
-);
-
-
-let session=
-await response.json();
-
-console.log(session);
-
-
-
-await stripe.redirectToCheckout({
-sessionId:session.id
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({ amount, date, note })
 });
+
+let data = await response.json();
+
+if(data.error){
+alert(data.error);
+return;
+}
+
+await stripe.redirectToCheckout({ sessionId:data.id });
 
 }
 catch(err){
-
-console.log(err);
-
-alert(
-"Stripe checkout failed"
-);
-
-document
-.getElementById(
-"depositBtn"
-).disabled=false;
-
+alert("Payment failed");
+document.getElementById("depositBtn").disabled = false;
 }
 
-}
-);
+});
 
 </script>
 

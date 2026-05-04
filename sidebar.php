@@ -32,6 +32,11 @@
       <span class="icon">⬆️</span>
       <span class="text">Expense</span>
     </a>
+    <a href="forecast.php"
+   class="sidebar-item <?= basename($_SERVER['PHP_SELF']) == 'forecast.php' ? 'active' : '' ?>">
+  <span class="icon">📈</span>
+  <span class="text">Future Forecasting</span>
+</a>
 
   </div>
 

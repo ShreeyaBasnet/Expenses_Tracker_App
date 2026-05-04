@@ -2,153 +2,65 @@
 session_start();
 include "../Includes/db.php";
 
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../Config/login.php");
-    exit();
+if(!isset($_SESSION['user_id'])){
+header("Location: ../Config/login.php");
+exit();
 }
 
 $user_id = $_SESSION['user_id'];
 $error = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+/* HANDLE WALLET PAYMENT */
+if($_SERVER["REQUEST_METHOD"]=="POST" && $_POST["payment_method"]=="wallet"){
 
-    $amount = isset($_POST['amount']) ? floatval($_POST['amount']) : 0;
-    $date = $_POST['date'] ?? "";
-    $category = $_POST['category'] ?? "";
-    $description = isset($_POST['description']) 
-        ? htmlspecialchars($_POST['description']) 
-        : "";
+$amount = floatval($_POST['amount']);
+$date = $_POST['date'];
+$category = $_POST['category'];
+$description = htmlspecialchars($_POST['description']);
 
+/* BALANCE */
 
-/* WALLET BALANCE */
-
-$stmt1=$conn->prepare(
-"SELECT SUM(amount) total
-FROM deposits
-WHERE user_id=?"
-);
-
-$stmt1->bind_param(
-"i",
-$user_id
-);
-
+$stmt1=$conn->prepare("SELECT IFNULL(SUM(amount),0) total FROM deposits WHERE user_id=?");
+$stmt1->bind_param("i",$user_id);
 $stmt1->execute();
+$totalDeposit=$stmt1->get_result()->fetch_assoc()['total'];
 
-$totalDeposit=
-$stmt1->get_result()
-->fetch_assoc()['total'] ?? 0;
-
-
-
-$stmt2=$conn->prepare(
-"SELECT SUM(amount) total
-FROM expenses
-WHERE user_id=?"
-);
-
-$stmt2->bind_param(
-"i",
-$user_id
-);
-
+$stmt2=$conn->prepare("SELECT IFNULL(SUM(amount),0) total FROM expenses WHERE user_id=?");
+$stmt2->bind_param("i",$user_id);
 $stmt2->execute();
+$totalExpense=$stmt2->get_result()->fetch_assoc()['total'];
 
-$totalExpense=
-$stmt2->get_result()
-->fetch_assoc()['total'] ?? 0;
-
-
-
-$currentBalance=
-$totalDeposit-
-$totalExpense;
-
-
+$walletBalance=$totalDeposit-$totalExpense;
 
 /* VALIDATION */
 
 if($amount<=0){
-
-$error=
-"Amount must be greater than 0";
-
+$error="Invalid amount";
 }
-
-elseif(empty($date)){
-
-$error=
-"Date required";
-
+elseif($amount>$walletBalance){
+$error="Insufficient balance: $".number_format($walletBalance,2);
 }
-
-elseif($amount>$currentBalance){
-
-$error=
-"Wallet payment failed.
-Insufficient balance:
-$".
-number_format(
-$currentBalance,
-2
-);
-
-}
-
 else{
 
+$stmt=$conn->prepare("
+INSERT INTO expenses (user_id,description,category,amount,date)
+VALUES(?,?,?,?,?)
+");
 
-/* SAVE EXPENSE */
-
-$stmt=
-$conn->prepare(
-"INSERT INTO expenses
-(user_id,description,category,amount,date)
-VALUES(?,?,?,?,?)"
-);
-
-$stmt->bind_param(
-"issds",
-$user_id,
-$description,
-$category,
-$amount,
-$date
-);
-
+$stmt->bind_param("issds",$user_id,$description,$category,$amount,$date);
 $stmt->execute();
 
+$stmt3=$conn->prepare("
+INSERT INTO transactions (user_id,type,amount,description)
+VALUES (?,'expense',?,?)
+");
 
+$stmt3->bind_param("ids",$user_id,$amount,$description);
+$stmt3->execute();
 
-/* TRANSACTION */
-
-$stmt2=
-$conn->prepare(
-"INSERT INTO transactions
-(user_id,type,amount,description)
-VALUES
-(?,'expense',?,?)"
-);
-
-$stmt2->bind_param(
-"ids",
-$user_id,
-$amount,
-$description
-);
-
-$stmt2->execute();
-
-
-
-header(
-"Location: dashboard.php"
-);
-
+header("Location: dashboard.php");
 exit();
-
 }
-
 }
 ?>
 
@@ -156,13 +68,18 @@ exit();
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Wallet Payment</title>
+<title>Pay Expense</title>
 
 <link rel="stylesheet" href="../Assets/global.css">
 <link rel="stylesheet" href="../Assets/sidebar.css">
 <link rel="stylesheet" href="../Assets/dashboard.css">
 <link rel="stylesheet" href="../Assets/balance.css">
 <link rel="stylesheet" href="../Assets/expense.css">
+
+
+<script src="https://js.stripe.com/v3/"></script>
+
+
 
 </head>
 
@@ -174,101 +91,43 @@ exit();
 
 <main class="dash-main">
 
-<h2>Pay Using Wallet</h2>
-
+<h2>Pay Expense</h2>
 
 <?php include "../Includes/balance.php"; ?>
 
-
-<?php if(!empty($error)): ?>
-
-<div class="form-error">
-<?= $error ?>
-</div>
-
+<?php if($error): ?>
+<div class="form-error"><?= $error ?></div>
 <?php endif; ?>
 
+<div class="form-card">
 
+<h3>Add Expense</h3>
 
-<div class="form-container">
+<form id="expenseForm">
 
-<form method="POST" id="walletForm">
-
+<input type="hidden" name="payment_method" id="payment_method">
 
 <label>Amount</label>
-
-<input
-type="number"
-name="amount"
-min="1"
-step="0.01"
-required
-value="<?= $_POST['amount'] ?? '' ?>"
->
-
-
+<input type="number" id="amount" required>
 
 <label>Date</label>
-
-<input
-type="date"
-name="date"
-id="date"
-required
-value="<?= $_POST['date'] ?? '' ?>"
->
-
-
+<input type="date" id="date">
 
 <label>Category</label>
-
-<select
-name="category"
-required
->
-
-<option value="">
-Select category
-</option>
-
-<option value="Food">
-Food
-</option>
-
-<option value="Transport">
-Transport
-</option>
-
-<option value="Shopping">
-Shopping
-</option>
-
-<option value="Bills">
-Bills
-</option>
-
-<option value="Entertainment">
-Entertainment
-</option>
-
+<select id="category">
+<option>Food</option>
+<option>Transport</option>
+<option>Shopping</option>
+<option>Bills</option>
+<option>Entertainment</option>
 </select>
 
-
-
 <label>Description</label>
+<input type="text" id="description" placeholder="Optional">
 
-<input
-type="text"
-name="description"
-placeholder="Optional"
-value="<?= $_POST['description'] ?? '' ?>"
->
+<button type="button" class="wallet-btn" onclick="walletPay()">💰 Pay from Wallet</button>
 
-
-
-<button type="submit">
-💳 Pay with Wallet
-</button>
+<button type="button" class="stripe-btn" onclick="stripePay()">💳 Pay via Stripe</button>
 
 </form>
 
@@ -277,58 +136,70 @@ value="<?= $_POST['description'] ?? '' ?>"
 </main>
 </div>
 
-
-
 <script>
 
-const dateInput=
-document.getElementById(
-"date"
-);
+/* auto date */
+document.getElementById("date").value =
+new Date().toISOString().split("T")[0];
 
-if(!dateInput.value){
+const stripe = Stripe("YOUR_PUBLIC_KEY");
 
-dateInput.value=
-new Date()
-.toISOString()
-.split("T")[0];
+/* WALLET */
+function walletPay(){
 
+let pin = prompt("Enter Wallet PIN");
+
+if(pin!=="1234"){
+alert("Wrong PIN");
+return;
 }
 
-
-
-/* Payment confirmation */
-
-document
-.getElementById(
-"walletForm"
-)
-.addEventListener(
-"submit",
-function(e){
-
-let amount=
-document.querySelector(
-'[name="amount"]'
-).value;
-
-
-let ok=
-confirm(
-"Confirm wallet payment of $"
-+
-amount
-+
-" ?"
-);
-
-
-if(!ok){
-e.preventDefault();
+submitForm("wallet");
 }
 
+/* STRIPE */
+async function stripePay(){
+
+let res = await fetch("../Config/create-expense-session.php",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+amount:document.getElementById("amount").value,
+date:document.getElementById("date").value,
+category:document.getElementById("category").value,
+description:document.getElementById("description").value
+})
+});
+
+let data = await res.json();
+
+stripe.redirectToCheckout({
+sessionId:data.id
+});
 }
-);
+
+/* SUBMIT */
+function submitForm(type){
+
+let form = document.createElement("form");
+form.method="POST";
+
+function add(n,v){
+let i=document.createElement("input");
+i.name=n;
+i.value=v;
+form.appendChild(i);
+}
+
+add("payment_method",type);
+add("amount",document.getElementById("amount").value);
+add("date",document.getElementById("date").value);
+add("category",document.getElementById("category").value);
+add("description",document.getElementById("description").value);
+
+document.body.appendChild(form);
+form.submit();
+}
 
 </script>
 

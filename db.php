@@ -1,12 +1,23 @@
 <?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+/* LOAD ENV */
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
+/* DATABASE CONNECTION */
+
 $conn = new mysqli(
-    "maglev.proxy.rlwy.net",
-    "root", 
-    "lsNfxbtDHAVsZaAVGLPrMfiAfWEPpUYk",
-    "railway",
-    28723
+    $_ENV['DB_HOST'],
+    $_ENV['DB_USER'],
+    $_ENV['DB_PASS'],
+    $_ENV['DB_NAME'],
+    $_ENV['DB_PORT']
 );
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
 ?>

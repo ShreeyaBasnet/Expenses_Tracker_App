@@ -1,99 +1,131 @@
 /* =========================
-   PAGE TITLE
+   LAYOUT FIX
 ========================= */
-.dash-main h2 {
-  font-family: var(--font);
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--navy);
-  margin-bottom: 20px;
+.deposit-layout {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
 }
 
 /* =========================
-   FORM CONTAINER
+   CARD
 ========================= */
-.form-container {
+.deposit-card {
+  width: 420px;
   background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 24px;
-  max-width: 500px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.04);
 }
 
-/* FORM */
-.form-container form {
+/* =========================
+   TITLE
+========================= */
+.form-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+/* =========================
+   QUICK BUTTONS (FIXED)
+========================= */
+.quick-amounts {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
-/* LABEL */
-.form-container label {
+.quick-amounts button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: var(--emerald);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.quick-amounts button:hover {
+  opacity: 0.9;
+}
+
+/* =========================
+   INPUT GROUP
+========================= */
+.input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--gray-300);
+  border-radius: 10px;
+  padding: 0 10px;
+  margin-top: 6px;
+  background: #fafafa;
+}
+
+.input-group span {
+  font-weight: 600;
+  color: var(--gray-500);
+}
+
+.input-group input {
+  border: none;
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  outline: none;
+}
+
+/* =========================
+   INPUTS
+========================= */
+.deposit-card input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-300);
+  margin-top: 6px;
+  background: #fafafa;
+}
+
+/* =========================
+   LABEL
+========================= */
+.deposit-card label {
+  display: block;
+  margin-top: 12px;
   font-size: 13px;
   font-weight: 600;
   color: var(--gray-600);
 }
 
-/* INPUT */
-.form-container input {
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid var(--gray-300);
-  font-size: 14px;
-  font-family: var(--font);
-  background: #fafafa;
-  outline: none;
-  transition: 0.2s ease;
-}
-
-/* INPUT FOCUS */
-.form-container input:focus {
-  border-color: var(--navy);
-  background: var(--white);
-  box-shadow: 0 0 0 2px rgba(0,0,50,0.05);
-}
-
-/* BUTTON */
-.form-container button {
-  margin-top: 10px;
-  padding: 12px;
-  border-radius: 10px;
+/* =========================
+   BUTTON
+========================= */
+.deposit-card button[type="submit"] {
+  margin-top: 16px;
+  padding: 13px;
+  border-radius: 12px;
   border: none;
-  background: var(--navy);
-  color: var(--white);
+  background: var(--navy); /* SAME AS DASHBOARD */
+  color: white;
   font-weight: 600;
-  font-size: 14px;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: 0.2s;
 }
-
-/* HOVER */
-.form-container button:hover {
-  opacity: 0.95;
+.deposit-card button[type="submit"]:hover {
+  background: #1b2f4a; /* slightly darker navy */
   transform: translateY(-1px);
 }
 
-/* CLICK */
-.form-container button:active {
-  transform: scale(0.98);
-}
-
-/* ERROR */
-.form-error {
-  background: #fdeaea;
-  color: var(--danger);
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  font-size: 13px;
-  border: 1px solid #f5c2c2;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .form-container {
-    max-width: 100%;
-    padding: 18px;
-  }
+/* =========================
+   PAGE TITLE
+========================= */
+.page-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 20px;
 }

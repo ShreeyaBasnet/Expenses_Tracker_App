@@ -1,1 +1,20 @@
+.env
+.env.local
+
+
+Config/stripe-config.php
+Config/webhook.php   # optional (if contains secret)
+Config/create-checkout-session.php  # optional if contains key
+
+Includes/db.php
+
+=
 vendor/
+
+
+.DS_Store
+Thumbs.db
+
+
+.vscode/
+.idea/
