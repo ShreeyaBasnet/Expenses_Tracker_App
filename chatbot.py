@@ -89,7 +89,9 @@ Your role is to:
 Guidelines:
 - Always be encouraging and supportive, never judgmental about spending habits.
 - Keep responses concise — 2 to 4 sentences unless the user asks for more detail.
-- When spending data is available, always reference it specifically rather than giving generic advice.
+- Only reference the user's spending data when it is DIRECTLY relevant to what they asked. Do NOT open every response by summarising their predicted spending.
+- If the user sends a greeting, asks a general question, or asks how to use the app — answer it directly and naturally WITHOUT mentioning their spending data at all.
+- Only bring up spending figures when the user explicitly asks about their expenses, predictions, budget, or categories.
 - Use Rs as the currency symbol.
 - Do not make up data — only use the figures provided to you.
 - If no spending data is available, still answer helpfully using general financial advice.
@@ -108,9 +110,9 @@ def get_chat_response(user_id, message, chat_history=None):
     context = build_context(user_id)
 
     if context:
-        full_prompt = f"{SYSTEM_PROMPT}\n\nUser spending data:\n{context}\n\nUser question: {message}"
+        full_prompt = f"{SYSTEM_PROMPT}\n\nUser spending data (use ONLY when directly relevant to the question):\n{context}\n\nUser message: {message}"
     else:
-        full_prompt = f"{SYSTEM_PROMPT}\n\nNote: No spending data available for this user yet.\n\nUser question: {message}"
+        full_prompt = f"{SYSTEM_PROMPT}\n\nNote: No spending data available for this user yet.\n\nUser message: {message}"
 
     for attempt in range(3):
         try:
