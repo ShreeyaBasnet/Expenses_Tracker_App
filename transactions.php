@@ -1,15 +1,32 @@
 <?php
+
 session_start();
 include "../Includes/db.php";
 
+/* LOGIN CHECK */
 if(!isset($_SESSION['user_id'])){
+
 header("Location: ../Config/login.php");
 exit();
+
 }
 
-$user_id=$_SESSION['user_id'];
+/* CSRF TOKEN */
+if(
+empty($_SESSION['csrf_token'])
+){
 
-$query="
+$_SESSION['csrf_token'] =
+bin2hex(random_bytes(32));
+
+}
+
+$user_id =
+$_SESSION['user_id'];
+
+/* GET TRANSACTIONS */
+
+$query = "
 SELECT
 id,
 amount,
@@ -21,7 +38,7 @@ WHERE user_id=?
 ORDER BY created_at DESC
 ";
 
-$stmt=
+$stmt =
 $conn->prepare($query);
 
 $stmt->bind_param(
@@ -31,7 +48,7 @@ $user_id
 
 $stmt->execute();
 
-$result=
+$result =
 $stmt->get_result();
 
 ?>
@@ -77,12 +94,12 @@ Wallet Transactions
 
 <?php include "../Includes/balance.php"; ?>
 
-
 <div class="txn-container">
 
 <table class="txn-table">
 
 <thead>
+
 <tr>
 
 <th>Description</th>
@@ -92,6 +109,7 @@ Wallet Transactions
 <th>Actions</th>
 
 </tr>
+
 </thead>
 
 <tbody>
@@ -101,21 +119,24 @@ Wallet Transactions
 <tr>
 
 <td>
+
 <?= htmlspecialchars(
 $row['note'] ?: '—'
 ) ?>
-</td>
 
+</td>
 
 <td>
 
 <?php
-$label=
+
+$label =
 $row['type']=="expense"
 ?
 "Wallet Payment"
 :
 "Wallet Top Up";
+
 ?>
 
 <span class="
@@ -132,7 +153,6 @@ type-badge
 
 </td>
 
-
 <td>
 
 <?= date(
@@ -143,7 +163,6 @@ $row['date']
 ) ?>
 
 </td>
-
 
 <td class="
 <?= $row['type']=="expense"
@@ -166,9 +185,9 @@ $row['amount'],
 
 </td>
 
-
 <td class="txn-actions">
 
+<!-- EDIT -->
 <a
 href="edit.php?id=<?= $row['id'] ?>"
 class="btn-edit"
@@ -176,19 +195,38 @@ class="btn-edit"
 Edit
 </a>
 
-
-<a
-href="delete.php?id=<?= $row['id'] ?>"
-class="btn-delete"
-
-onclick="
+<!-- DELETE -->
+<form
+method="POST"
+action="delete.php"
+style="display:inline;"
+onsubmit="
 return confirm(
 'Delete this transaction?'
 )
 "
 >
+
+<input
+type="hidden"
+name="csrf_token"
+value="<?= $_SESSION['csrf_token'] ?>"
+>
+
+<input
+type="hidden"
+name="id"
+value="<?= $row['id'] ?>"
+>
+
+<button
+type="submit"
+class="btn-delete"
+>
 Delete
-</a>
+</button>
+
+</form>
 
 </td>
 

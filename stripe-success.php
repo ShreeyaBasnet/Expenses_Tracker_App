@@ -1,23 +1,72 @@
 <?php
+
+session_start();
+
 require "../vendor/autoload.php";
+include "../Includes/db.php";
 
-\Stripe\Stripe::setApiKey(getenv("STRIPE_SECRET_KEY"));
-$session_id = $_GET['session_id'] ?? null;
+/* LOGIN CHECK */
+if(!isset($_SESSION['user_id'])){
 
+header("Location: ../Config/login.php");
+exit();
+
+}
+
+/* STRIPE SECRET */
+\Stripe\Stripe::setApiKey(
+$_ENV["STRIPE_SECRET_KEY"]
+);
+
+/* GET SESSION ID */
+$session_id =
+$_GET['session_id'] ?? null;
+
+/* VALIDATION */
 if (!$session_id) {
-  die("Invalid session");
+
+die("Invalid Stripe session");
+
 }
 
 try {
 
-  $session = \Stripe\Checkout\Session::retrieve($session_id);
+/* RETRIEVE SESSION */
 
-  if ($session->payment_status !== "paid") {
-    die("Payment not verified");
-  }
+$session =
+\Stripe\Checkout\Session::retrieve(
+$session_id
+);
 
-} catch(Exception $e) {
-  die("Error verifying payment: " . $e->getMessage());
+/* VERIFY PAYMENT */
+
+if (
+$session->payment_status !== "paid"
+) {
+
+die("Payment not verified");
+
+}
+
+/* OPTIONAL EXTRA SECURITY */
+
+if (
+$session->metadata->type !== "deposit"
+) {
+
+die("Invalid payment type");
+
+}
+
+}
+catch(Exception $e) {
+
+die(
+"Stripe verification failed: "
+.
+$e->getMessage()
+);
+
 }
 
 ?>
@@ -25,54 +74,107 @@ try {
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
+
 <title>Payment Success</title>
 
-<link rel="stylesheet" href="../Assets/global.css">
-<link rel="stylesheet" href="../Assets/dashboard.css">
+<link rel="stylesheet"
+href="../Assets/global.css">
+
+<link rel="stylesheet"
+href="../Assets/dashboard.css">
 
 <style>
-.success-box {
-  max-width: 450px;
-  margin: 80px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 14px;
-  text-align: center;
-  border: 1px solid #eee;
+
+body{
+background:#f5f7fb;
+font-family:Arial,sans-serif;
 }
 
-.success-box h2 {
-  color: #16a34a;
-  margin-bottom: 10px;
+.success-wrapper{
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px;
 }
 
-.success-box p {
-  color: #555;
-  margin-bottom: 20px;
+.success-box{
+width:100%;
+max-width:450px;
+background:white;
+padding:35px 30px;
+border-radius:18px;
+text-align:center;
+border:1px solid #eee;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
 }
 
-.success-box a {
-  display: inline-block;
-  padding: 10px 18px;
-  background: var(--navy);
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
+.success-icon{
+font-size:55px;
+margin-bottom:10px;
 }
+
+.success-box h2{
+color:#16a34a;
+font-size:28px;
+margin-bottom:10px;
+}
+
+.success-box p{
+color:#666;
+font-size:15px;
+line-height:1.6;
+margin-bottom:25px;
+}
+
+.success-btn{
+display:inline-block;
+padding:12px 22px;
+background:var(--navy);
+color:white;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+transition:0.2s ease;
+}
+
+.success-btn:hover{
+opacity:0.95;
+transform:translateY(-1px);
+}
+
 </style>
 
 </head>
 
 <body>
 
+<div class="success-wrapper">
+
 <div class="success-box">
 
-<h2>Payment Successful 🎉</h2>
+<div class="success-icon">
+✅
+</div>
 
-<p>Your wallet will be updated shortly.</p>
+<h2>
+Payment Successful
+</h2>
 
-<a href="dashboard.php">Go to Dashboard</a>
+<p>
+Your wallet top-up has been verified successfully through Stripe.
+</p>
+
+<a
+href="dashboard.php"
+class="success-btn"
+>
+Go to Dashboard
+</a>
+
+</div>
 
 </div>
 
