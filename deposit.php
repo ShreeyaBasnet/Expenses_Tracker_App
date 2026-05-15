@@ -19,6 +19,11 @@ $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 <head>
 
 <meta charset="UTF-8">
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
+
 <title>Wallet Top-Up</title>
 
 <link rel="stylesheet" href="../Assets/global.css">
@@ -61,14 +66,34 @@ value="<?= $_SESSION['csrf_token'] ?>"
 
 <!-- QUICK AMOUNTS -->
 <div class="quick-amounts">
-<button type="button" onclick="setAmount(100)">+100</button>
-<button type="button" onclick="setAmount(500)">+500</button>
-<button type="button" onclick="setAmount(1000)">+1000</button>
+
+<button
+type="button"
+onclick="setAmount(100)"
+>
++100
+</button>
+
+<button
+type="button"
+onclick="setAmount(500)"
+>
++500
+</button>
+
+<button
+type="button"
+onclick="setAmount(1000)"
+>
++1000
+</button>
+
 </div>
 
 <label>Amount</label>
 
 <div class="input-group">
+
 <span>$</span>
 
 <input
@@ -101,7 +126,7 @@ placeholder="Optional"
 type="submit"
 id="depositBtn"
 >
-💳 Add Money via Stripe
+Add Money via Stripe
 </button>
 
 </form>
@@ -112,7 +137,6 @@ id="depositBtn"
 </main>
 </div>
 
-
 <script>
 
 /* AUTO DATE */
@@ -121,7 +145,9 @@ new Date().toISOString().split("T")[0];
 
 /* QUICK AMOUNT */
 function setAmount(val){
+
 document.getElementById("amount").value = val;
+
 }
 
 /* STRIPE */
@@ -137,6 +163,8 @@ async function(e){
 
 e.preventDefault();
 
+/* VALUES */
+
 let amount =
 document.getElementById("amount").value;
 
@@ -149,16 +177,24 @@ document.getElementById("note").value;
 let csrf_token =
 document.getElementById("csrf_token").value;
 
-if(amount<=0){
+/* VALIDATION */
+
+if(amount <= 0){
+
 alert("Enter valid amount");
 return;
+
 }
+
+/* DISABLE BUTTON */
 
 document
 .getElementById("depositBtn")
 .disabled = true;
 
 try{
+
+/* FETCH */
 
 let response =
 await fetch(
@@ -180,13 +216,33 @@ csrf_token
 }
 );
 
+/* RESPONSE */
+
 let data =
 await response.json();
 
+/* DEBUG */
+
+console.log(
+"Stripe Response:",
+data
+);
+
+/* ERROR */
+
 if(data.error){
+
 alert(data.error);
+
+document
+.getElementById("depositBtn")
+.disabled = false;
+
 return;
+
 }
+
+/* REDIRECT */
 
 await stripe.redirectToCheckout({
 sessionId:data.id
@@ -195,7 +251,16 @@ sessionId:data.id
 }
 catch(err){
 
-alert("Payment failed");
+/* DEBUG */
+
+console.log(
+"Stripe Error:",
+err
+);
+
+alert(err);
+
+/* ENABLE BUTTON */
 
 document
 .getElementById("depositBtn")

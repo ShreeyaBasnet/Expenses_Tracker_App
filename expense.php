@@ -170,6 +170,11 @@ exit();
 
 <meta charset="UTF-8">
 
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
+
 <title>Pay Expense</title>
 
 <link rel="stylesheet"
@@ -211,6 +216,8 @@ href="../Assets/expense.css">
 
 <?php endif; ?>
 
+<div class="form-wrapper">
+
 <div class="form-card">
 
 <h3>Add Expense</h3>
@@ -229,6 +236,32 @@ type="hidden"
 name="payment_method"
 id="payment_method"
 >
+
+<!-- QUICK AMOUNTS -->
+<div class="quick-btns">
+
+<button
+type="button"
+onclick="setAmount(100)"
+>
++100
+</button>
+
+<button
+type="button"
+onclick="setAmount(500)"
+>
++500
+</button>
+
+<button
+type="button"
+onclick="setAmount(1000)"
+>
++1000
+</button>
+
+</div>
 
 <label>Amount</label>
 
@@ -270,7 +303,7 @@ type="button"
 class="wallet-btn"
 onclick="walletPay()"
 >
-💰 Pay from Wallet
+Add Expenses
 </button>
 
 <button
@@ -278,11 +311,12 @@ type="button"
 class="stripe-btn"
 onclick="stripePay()"
 >
-💳 Pay via Stripe
+Pay via Stripe
 </button>
 
 </form>
 
+</div>
 </div>
 
 </main>
@@ -294,9 +328,23 @@ onclick="stripePay()"
 document.getElementById("date").value =
 new Date().toISOString().split("T")[0];
 
+/* QUICK AMOUNT */
+function setAmount(val){
+
+let amountInput =
+document.getElementById("amount");
+
+let currentAmount =
+parseFloat(amountInput.value) || 0;
+
+amountInput.value =
+currentAmount + val;
+
+}
+
 /* STRIPE */
 const stripe = Stripe(
-"YOUR_PUBLIC_KEY"
+"pk_test_51TPcD92MAbMjSPP9kAcoA5qXY28e5BZMpKnzHqwrtxV60bmwwNkdagvvJwRWNJNeIQAFvsPLdGyAOoMG6ZLAm0VT00H3rqK6wk"
 );
 
 /* WALLET PAYMENT */
