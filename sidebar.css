@@ -1,0 +1,162 @@
+/* =========================
+   SIDEBAR CONTAINER
+========================= */
+.sidebar{
+  background:var(--navy);
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  width:240px;
+  position:sticky;
+  top:0;
+  padding-top:20px;
+}
+
+/* =========================
+   LOGO
+========================= */
+.sidebar-logo{
+  font-family:var(--font);
+  font-size:20px;
+  font-weight:800;
+  color:var(--white);
+  padding:0 24px 24px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-logo span{
+  color:var(--emerald);
+}
+
+/* =========================
+   SECTION
+========================= */
+.sidebar-section{
+  padding:20px 0 10px;
+}
+
+.sidebar-section-label{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.35);
+  padding:0 24px;
+  margin-bottom:8px;
+}
+
+/* =========================
+   SIDEBAR ITEMS
+========================= */
+.sidebar-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:48px;
+  padding:12px 24px;
+  font-size:14px;
+  color:rgba(255,255,255,.72);
+  text-decoration:none;
+  border-left:3px solid transparent;
+  transition:.2s ease;
+}
+
+.sidebar-item:hover{
+  background:rgba(255,255,255,.08);
+  color:var(--white);
+}
+
+.sidebar-item.active{
+  background:rgba(255,255,255,.12);
+  color:var(--white);
+  border-left:3px solid var(--emerald);
+}
+
+/* =========================
+   ICONS
+========================= */
+.sidebar-icon{
+  width:20px;
+  min-width:20px;
+  text-align:center;
+  font-size:16px;
+  color:inherit;
+  transition:.2s ease;
+}
+
+.sidebar-item:hover .sidebar-icon{
+  transform:scale(1.05);
+}
+
+/* =========================
+   TEXT
+========================= */
+.sidebar-item .text{
+  flex:1;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.sidebar-footer{
+  margin-top:auto;
+  padding:20px 0;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+/* =========================
+   PROFILE
+========================= */
+.sidebar-profile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:16px 18px;
+  margin:20px 12px;
+  background:rgba(255,255,255,.06);
+  border-radius:14px;
+}
+
+.profile-avatar{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  background:#ffffff22;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.profile-avatar i{
+  font-size:18px;
+  color:white;
+}
+
+.profile-info{
+  display:flex;
+  flex-direction:column;
+}
+
+.profile-label{
+  font-size:11px;
+  color:#b8c1d1;
+}
+
+.profile-name{
+  font-size:15px;
+  font-weight:600;
+  color:white;
+  max-width:140px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:900px){
+  .sidebar{
+    display:none;
+  }
+}

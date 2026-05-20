@@ -1,0 +1,311 @@
+/* =========================
+   DASHBOARD LAYOUT
+========================= */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* =========================
+   MAIN AREA
+========================= */
+.dash-main {
+  padding: 30px;
+}
+
+/* =========================
+   HEADER
+========================= */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.dash-greeting {
+  font-size: 24px;
+  font-weight: 800;
+  font-family: var(--font);
+  color: var(--navy);
+}
+
+.dash-date {
+  font-size: 13px;
+  color: var(--gray-500);
+}
+
+/* HEADER BUTTONS */
+.dash-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.kpi-card {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid var(--gray-200);
+  transition: 0.2s;
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+}
+
+.kpi-card.navy {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--gray-500);
+}
+
+.kpi-card.navy .kpi-label {
+  color: rgba(255,255,255,0.6);
+}
+
+.kpi-value {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+/* =========================
+   TRANSACTIONS SECTION
+========================= */
+.txn-section {
+  background: var(--white);
+  border-radius: 14px;
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+}
+
+.txn-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.txn-title {
+  font-weight: 700;
+  font-family: var(--font);
+  color: var(--navy);
+}
+
+/* =========================
+   TABLE
+========================= */
+.txn-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.txn-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  padding: 12px 20px;
+  background: var(--gray-100);
+}
+
+.txn-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 14px;
+}
+
+.txn-table tr:hover {
+  background: var(--gray-100);
+}
+
+/* =========================
+   FORM (DEPOSIT / EXPENSE)
+========================= */
+form {
+  max-width: 420px;
+  margin-top: 20px;
+  background: var(--white);
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid var(--gray-200);
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--gray-300);
+  font-size: 14px;
+  font-family: var(--font-body);
+}
+
+form input:focus,
+form select:focus {
+  outline: none;
+  border-color: var(--emerald);
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--emerald);
+  color: var(--white);
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+form button:hover {
+  background: var(--emerald-light);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dash-main {
+    padding: 20px;
+  }
+}
+
+/* HELLO ICON */
+.hello-icon{
+  font-size:28px;
+  color:#f59e0b;
+  margin-left:8px;
+  transform:rotate(-12deg);
+}
+
+/* =========================
+   REPORT SECTION
+========================= */
+.report-section{
+  margin-top:24px;
+}
+
+/* BUTTON */
+.report-toggle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  background:#1e3357;
+  color:white;
+
+  border:none;
+
+  height:54px;
+
+  padding:0 22px;
+
+  border-radius:14px;
+
+  font-size:15px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.2s ease;
+}
+
+.report-toggle:hover{
+  transform:translateY(-2px);
+}
+
+/* SLIDE */
+.qr-slide{
+  max-height:0;
+  overflow:hidden;
+
+  transition:max-height .4s ease;
+
+  background:white;
+
+  border-radius:20px;
+
+  margin-top:18px;
+
+  border:1px solid #e5e7eb;
+
+  padding:0 24px;
+}
+
+.qr-slide.show{
+  max-height:600px;
+  padding:24px;
+}
+
+/* TITLE */
+.qr-slide h3{
+  font-size:24px;
+  font-weight:800;
+
+  color:#1e3357;
+
+  margin-bottom:10px;
+}
+
+/* TEXT */
+.qr-slide p{
+  color:#64748b;
+  margin-bottom:24px;
+}
+
+/* QR */
+#qrcode{
+  display:flex;
+  justify-content:center;
+  margin-bottom:24px;
+}
+
+/* DOWNLOAD BTN */
+.download-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  width:100%;
+  height:54px;
+
+  background:#2f855a;
+  color:white;
+
+  border-radius:14px;
+
+  text-decoration:none;
+
+  font-weight:700;
+
+  transition:.2s ease;
+}
+
+.download-btn:hover{
+  transform:translateY(-2px);
+}

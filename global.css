@@ -1,0 +1,73 @@
+/* =========================
+   GLOBAL VARIABLES
+========================= */
+:root {
+  --navy: #1B2E4B;
+  --navy-light: #243d63;
+  --navy-dark: #121f34;
+
+  --emerald: #2E7D5A;
+  --emerald-light: #3a9e72;
+  --emerald-pale: #E8F4EF;
+
+  --bg: #F5F7FA;
+  --white: #ffffff;
+  --text: #1a2235;
+
+  --gray-100: #f8f9fb;
+  --gray-200: #edf0f4;
+  --gray-300: #d4dae4;
+  --gray-500: #8896ab;
+  --gray-700: #4a5568;
+
+  --danger: #E63946;
+
+  --font: 'Sora', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+/* =========================
+   RESET
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   BASE BODY
+========================= */
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+   GLOBAL BUTTONS (OPTIONAL)
+========================= */
+.btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  font-family: var(--font);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-primary {
+  background: var(--emerald);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--emerald-light);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--gray-300);
+  color: var(--navy);
+}

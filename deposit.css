@@ -1,0 +1,206 @@
+/* =========================
+   PAGE TITLE
+========================= */
+.page-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-bottom: 24px;
+}
+
+/* =========================
+   CENTER LAYOUT
+========================= */
+.deposit-layout {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px 0 40px;
+}
+
+/* =========================
+   CARD
+========================= */
+.deposit-card {
+  width: 100%;
+  max-width: 460px;
+
+  background: #fff;
+
+  border-radius: 22px;
+
+  border: 1px solid #e5e7eb;
+
+  padding: 32px;
+
+  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   TITLE
+========================= */
+.form-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--navy);
+
+  margin-bottom: 24px;
+}
+
+/* =========================
+   FORM
+========================= */
+#depositForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* =========================
+   LABELS
+========================= */
+#depositForm label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: -10px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+#depositForm input {
+  width: 100%;
+
+  height: 52px;
+
+  border: 1px solid #dbe2ea;
+
+  border-radius: 14px;
+
+  padding: 0 16px;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: all 0.2s ease;
+
+  background: #fff;
+}
+
+/* INPUT FOCUS */
+#depositForm input:focus {
+  border-color: #1e3357;
+  box-shadow: 0 0 0 4px rgba(30, 51, 87, 0.08);
+}
+
+/* =========================
+   INPUT GROUP
+========================= */
+.input-group {
+  position: relative;
+}
+
+.input-group span {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  font-size: 16px;
+  font-weight: 700;
+
+  color: #64748b;
+}
+
+.input-group input {
+  padding-left: 38px !important;
+}
+
+/* =========================
+   QUICK AMOUNTS
+========================= */
+.quick-amounts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.quick-amounts button {
+  height: 48px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #2f855a;
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+.quick-amounts button:hover {
+  transform: translateY(-2px);
+  background: #276749;
+}
+
+/* =========================
+   STRIPE BUTTON
+========================= */
+#depositBtn {
+  margin-top: 8px;
+
+  height: 54px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #1e3357;
+
+  color: white;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+#depositBtn:hover {
+  transform: translateY(-2px);
+  opacity: 0.96;
+}
+
+/* DISABLED */
+#depositBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+  .deposit-card {
+    padding: 24px;
+  }
+
+  .quick-amounts {
+    grid-template-columns: 1fr;
+  }
+
+}
